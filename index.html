@@ -1,0 +1,1932 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>情感探索问卷</title>
+<meta name="theme-color" id="metaTheme" content="#fbfaff">
+<style>
+  :root {
+    --pink: #f0689b;
+    --pink-deep: #e0417c;
+    --violet: #667eea;
+    --violet-2: #9b6cf3;
+    --blue: #5bb6e8;
+    --green: #38b2ac;
+    --amber: #f5a524;
+    --gray: #a0aec0;
+    --bg: #fbfaff;
+    --card: rgba(255,255,255,.86);
+    --card-solid: #ffffff;
+    --text: #23233a;
+    --text-secondary: #6d6d8a;
+    --text-faint: #a6a6c2;
+    --bd: rgba(120,118,190,.14);
+    --sh-sm: 0 3px 14px rgba(66,54,102,.06);
+    --sh-md: 0 14px 34px rgba(66,54,102,.10);
+    --sh-lg: 0 18px 44px rgba(224,65,124,.26);
+    --grad-brand: linear-gradient(135deg,#ff8fb4 0%,#f0689b 42%,#9b6cf3 100%);
+    --grad-line: linear-gradient(90deg,#f0689b,#9b6cf3);
+    --radius: 22px;
+
+    /* —— 主题化变量（浅色基准值，深色在下方覆盖）—— */
+    --title-grad: linear-gradient(120deg,#2b2b45 0%,#5a4a86 55%,#c2437e 100%);
+    --bd-strong: rgba(255,255,255,.95);
+    --hairline: rgba(255,255,255,.70);
+    --pill-bg: rgba(255,255,255,.80);
+    --pill-bg-active: rgba(255,255,255,.95);
+    --track-bg: rgba(255,255,255,.75);
+    --inset-sh: inset 0 1px 4px rgba(66,54,102,.10);
+    --letter-bg: #f0f0f8;
+    --letter-fg: #9a9abb;
+    --option-fg: #3c3c56;
+    --body-fg: #4c4c68;
+    --dim-fg: #5b5b78;
+    --hero-bg:
+      radial-gradient(120% 90% at 12% 0%, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 58%),
+      linear-gradient(168deg,#fff2f7 0%,#fdeef5 42%,#f1f0ff 100%);
+    --tip-bg: linear-gradient(120deg, rgba(240,104,155,.055), rgba(155,108,243,.055));
+    --tip-bd: rgba(255,255,255,.90);
+    --hint-bg: linear-gradient(120deg, rgba(240,104,155,.10), rgba(155,108,243,.10));
+    --hint-fg: #c9437c;
+    --hint-bd: rgba(240,104,155,.20);
+    --actions-bg: linear-gradient(180deg, rgba(251,250,255,0) 0%, rgba(251,250,255,.94) 34%, rgba(251,250,255,.97) 100%);
+    --svg-track: #eceef8;
+    --svg-grid: #e3e5f2;
+    --svg-needle: #4a4a68;
+    --radar-line: #667eea;
+    --radar-fill: rgba(102,126,234,.20);
+    --switch-bg: rgba(255,255,255,.72);
+    --switch-bd: rgba(255,255,255,.95);
+    --modal-bg: #fdfcff;
+    --modal-bd: rgba(224,65,124,.45);
+    --icon-sh: 0 16px 34px rgba(224,65,124,.32), inset 0 -3px 10px rgba(0,0,0,.08), inset 0 3px 8px rgba(255,255,255,.45);
+    --tag-sh: 0 2px 8px rgba(66,54,102,.08);
+    --btn-outline-bd: rgba(240,104,155,.45);
+    --opt-sh: 0 12px 26px rgba(224,65,124,.30);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* 背景氛围层：三团柔光 */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(74% 46% at 6% -8%, rgba(255,178,207,.60) 0%, rgba(255,178,207,0) 62%),
+      radial-gradient(62% 42% at 100% 0%, rgba(178,186,255,.52) 0%, rgba(178,186,255,0) 64%),
+      radial-gradient(72% 44% at 50% 104%, rgba(255,222,199,.48) 0%, rgba(255,222,199,0) 62%);
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
+    background: radial-gradient(46% 30% at 88% 38%, rgba(255,255,255,.85) 0%, rgba(255,255,255,0) 70%);
+  }
+
+  /* ===== 页面容器 ===== */
+  .page {
+    position: relative; z-index: 1;
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: calc(28px + env(safe-area-inset-top)) 22px calc(28px + env(safe-area-inset-bottom));
+    animation: fadeIn .45s cubic-bezier(.22,.9,.32,1);
+  }
+  .page.active { display: flex; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pop { from { transform: scale(.94) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+  @keyframes halo { 0%,100% { opacity: .55; transform: scale(1); } 50% { opacity: .18; transform: scale(1.22); } }
+  @keyframes shine { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%,-50%) scale(.88); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+
+  /* ===== 首页 ===== */
+  .cover { justify-content: center; align-items: center; text-align: center; gap: 22px; }
+
+  .cover-icon {
+    position: relative;
+    width: 92px; height: 92px;
+    background: var(--grad-brand);
+    border-radius: 30px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px;
+    box-shadow: var(--icon-sh);
+    animation: breathe 3.4s ease-in-out infinite;
+  }
+  .cover-icon::after {
+    content: ''; position: absolute; inset: -14px; border-radius: 40px;
+    background: radial-gradient(closest-side, rgba(240,104,155,.35), rgba(240,104,155,0));
+    z-index: -1; animation: halo 3.4s ease-in-out infinite;
+  }
+
+  .cover h1 {
+    font-size: 30px; font-weight: 800; letter-spacing: 1px; line-height: 1.25;
+    background: var(--title-grad);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .cover .subtitle {
+    color: var(--text-secondary); font-size: 15px; line-height: 1.8;
+    max-width: 300px; letter-spacing: .2px;
+  }
+  .cover .meta { display: flex; gap: 9px; font-size: 12.5px; color: var(--text-secondary); flex-wrap: wrap; justify-content: center; }
+  .cover .meta span {
+    background: var(--card); border: 1px solid var(--bd-strong);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    padding: 7px 14px; border-radius: 999px; box-shadow: var(--sh-sm); font-weight: 500;
+  }
+  .cover .btn-primary { margin-top: 10px; }
+
+  /* ===== 按钮 ===== */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 16px 42px;
+    border: none; border-radius: 999px;
+    font-size: 17px; font-weight: 700; letter-spacing: .6px;
+    font-family: inherit; cursor: pointer;
+    transition: transform .18s cubic-bezier(.22,.9,.32,1), box-shadow .18s, opacity .18s;
+  }
+  .btn:active { transform: scale(.96); }
+  .btn-primary {
+    background: var(--grad-brand); background-size: 200% 100%;
+    color: #fff;
+    box-shadow: var(--sh-lg);
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 46%;
+    background: linear-gradient(180deg, rgba(255,255,255,.32), rgba(255,255,255,0));
+    border-radius: 999px 999px 40% 40%;
+  }
+  .btn-primary:active { box-shadow: 0 8px 20px rgba(224,65,124,.26); }
+  .btn-outline {
+    background: var(--pill-bg); color: var(--pink-deep);
+    border: 1.5px solid var(--btn-outline-bd);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--sh-sm); font-weight: 700;
+  }
+  .btn-outline:active { background: var(--pill-bg-active); }
+  .btn-sm { padding: 14px 26px; font-size: 15.5px; letter-spacing: .3px; }
+
+  /* ===== 答题页 ===== */
+  .quiz { justify-content: center; gap: 18px; }
+  .quiz .progress-bar {
+    position: absolute; left: 22px; right: 22px;
+    top: calc(62px + env(safe-area-inset-top));
+  }
+  .quiz .progress-text {
+    position: absolute; left: 22px; right: 22px;
+    top: calc(84px + env(safe-area-inset-top));
+  }
+  .quiz .options { padding-top: 2px; }
+  .progress-bar {
+    width: 100%; height: 9px; background: var(--track-bg);
+    border: 1px solid var(--bd-strong);
+    border-radius: 999px; overflow: hidden;
+    box-shadow: var(--inset-sh);
+  }
+  .progress-bar .fill {
+    height: 100%; background: var(--grad-line); background-size: 200% 100%;
+    border-radius: 999px;
+    box-shadow: 0 0 12px rgba(155,108,243,.55);
+    transition: width .55s cubic-bezier(.22,.9,.32,1);
+  }
+  .progress-text {
+    font-size: 12.5px; color: var(--text-secondary); text-align: center;
+    letter-spacing: 1.2px; font-weight: 600; font-variant-numeric: tabular-nums;
+  }
+  .question-card {
+    position: relative; overflow: hidden;
+    background: var(--card-solid);
+    border: 1px solid var(--bd);
+    border-radius: 26px;
+    padding: 32px 22px 28px;
+    box-shadow: var(--sh-md);
+    animation: pop .38s cubic-bezier(.22,.9,.32,1);
+  }
+  .question-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--grad-line);
+  }
+  .question-card::after {
+    content: ''; position: absolute; right: -28px; top: -34px; width: 118px; height: 118px;
+    background: radial-gradient(closest-side, rgba(240,104,155,.10), rgba(240,104,155,0));
+    border-radius: 50%;
+  }
+  .question-card .q-num {
+    display: inline-block; position: relative; z-index: 1;
+    font-size: 11.5px; color: var(--pink-deep); font-weight: 800; letter-spacing: 1.4px;
+    background: linear-gradient(120deg, rgba(240,104,155,.13), rgba(155,108,243,.13));
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 14px;
+  }
+  .question-card .q-text {
+    position: relative; z-index: 1;
+    font-size: 18.5px; line-height: 1.72; font-weight: 600; color: var(--text);
+    letter-spacing: .2px;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 11px; counter-reset: opt; }
+  .option {
+    position: relative; counter-increment: opt;
+    display: flex; align-items: center; gap: 12px;
+    padding: 15px 16px 15px 15px;
+    background: var(--card);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid var(--bd-strong);
+    border-radius: 18px;
+    font-size: 15.5px; line-height: 1.5; color: var(--option-fg); font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--sh-sm);
+    transition: transform .2s cubic-bezier(.22,.9,.32,1), box-shadow .2s, background .2s, color .2s, border-color .2s;
+  }
+  .option::before {
+    content: counter(opt, upper-alpha);
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; letter-spacing: 0;
+    background: var(--letter-bg); color: var(--letter-fg);
+    transition: all .2s;
+  }
+  .option:active { transform: scale(.985); }
+  .option.selected {
+    background: linear-gradient(120deg,#ff8fb4 0%,#ef6a9d 46%,#9b6cf3 100%);
+    border-color: transparent; color: #fff; font-weight: 700;
+    box-shadow: var(--opt-sh);
+    transform: translateY(-1px);
+  }
+  .option.selected::before { background: rgba(255,255,255,.28); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.5); }
+
+  /* ===== 结果页 ===== */
+  .result { gap: 16px; padding-bottom: calc(30px + env(safe-area-inset-bottom)); }
+  .result > * { animation: riseIn .55s cubic-bezier(.22,.9,.32,1) both; }
+  .result > *:nth-child(2) { animation-delay: .05s; }
+  .result > *:nth-child(3) { animation-delay: .10s; }
+  .result > *:nth-child(4) { animation-delay: .15s; }
+  .result > *:nth-child(5) { animation-delay: .20s; }
+  .result > *:nth-child(6) { animation-delay: .25s; }
+  .result > *:nth-child(7) { animation-delay: .30s; }
+  .result > *:nth-child(8) { animation-delay: .35s; }
+  .result > *:nth-child(n+9) { animation-delay: .40s; }
+
+  .result-header { text-align: center; margin-bottom: 2px; }
+  .result-header h2 {
+    font-size: 24px; font-weight: 800; letter-spacing: 1.2px; margin-bottom: 6px;
+    background: var(--title-grad);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .result-header .desc { font-size: 13px; color: var(--text-faint); letter-spacing: .6px; }
+
+  /* 首屏结论卡（渐变玻璃） */
+  .hero-card {
+    background: var(--hero-bg);
+    border: 1px solid var(--bd-strong);
+    border-radius: 28px;
+    padding: 22px 18px 20px;
+    box-shadow: var(--sh-md);
+  }
+
+  .type-card { text-align: center; padding: 0 2px 16px; }
+  .type-card .type-emoji {
+    font-size: 50px; line-height: 1; display: inline-block;
+    filter: drop-shadow(0 8px 16px rgba(102,126,234,.28));
+  }
+  .type-card h3 { font-size: 22px; font-weight: 800; margin: 12px 0 8px; letter-spacing: .8px; color: var(--text); }
+  .type-card .type-summary { font-size: 14px; color: var(--text-secondary); line-height: 1.75; }
+  .type-card::after {
+    content: ''; display: block; width: 46px; height: 3px; border-radius: 3px;
+    background: var(--grad-line); opacity: .5; margin: 16px auto 0;
+  }
+
+  /* 仪表盘 */
+  .gauge-wrap { display: flex; flex-direction: column; align-items: center; padding: 2px 0 0; }
+  .degree-gauge { width: 252px; max-width: 76%; height: auto; display: block; margin: 0 auto; }
+  .gauge-svg { width: 252px; max-width: 76%; height: auto; display: block; margin: 0 auto; }
+  .gauge-label { margin-top: 12px; font-size: 21px; font-weight: 800; letter-spacing: 1.4px; color: var(--text); }
+  .gauge-stars { font-size: 17px; color: var(--amber); margin-top: 6px; letter-spacing: 3px; text-shadow: 0 2px 8px rgba(245,165,36,.35); }
+  .gauge-score {
+    font-size: 11.5px; color: var(--text-faint); margin-top: 10px; letter-spacing: .6px;
+    background: var(--pill-bg); border: 1px solid var(--bd-strong);
+    padding: 5px 12px; border-radius: 999px; box-shadow: var(--sh-sm);
+  }
+
+  /* 通用卡片 */
+  .panel, .radar-section, .dim-item {
+    background: var(--card);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--bd-strong);
+    border-radius: var(--radius);
+    box-shadow: var(--sh-sm);
+  }
+  .panel { padding: 20px 18px; }
+  .panel h4, .radar-section h3 {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 15.5px; font-weight: 800; letter-spacing: .6px; color: var(--text);
+    margin-bottom: 12px;
+  }
+  .panel h4::before, .radar-section h3::before {
+    content: ''; flex: none; width: 4px; height: 15px; border-radius: 3px;
+    background: var(--grad-line);
+  }
+  .panel .panel-body { font-size: 14.5px; color: var(--body-fg); line-height: 1.85; text-align: justify; letter-spacing: .2px; }
+
+  /* 雷达图 */
+  .radar-section { padding: 20px 18px 8px; }
+  .radar-section h3 { justify-content: flex-start; }
+  .radar-svg { display: block; margin: 2px auto 0; width: 262px; max-width: 100%; height: auto; }
+  .radar-section div[style] { color: var(--text-faint) !important; font-size: 10.5px !important;
+    letter-spacing: .4px; margin-top: -34px !important; margin-bottom: 6px !important; }
+
+  /* 刻度带 */
+  .dimension-list { display: flex; flex-direction: column; gap: 13px; }
+  .dim-item { position: relative; overflow: hidden; padding: 17px 16px 16px; }
+  .dim-item::before {
+    content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px;
+    background: var(--grad-line); border-radius: 0 3px 3px 0;
+  }
+  .dim-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+  .dim-header .dim-name, .dim-item .dim-name { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: .4px; }
+  .dim-degree-tag {
+    font-size: 11.5px; font-weight: 800; padding: 4px 11px; border-radius: 999px; white-space: nowrap;
+    letter-spacing: .6px; box-shadow: var(--tag-sh);
+  }
+  .dim-score-lite { font-size: 10.5px; font-weight: 500; opacity: .7; margin-left: 4px; letter-spacing: 0; }
+  .scale-band { display: flex; gap: 5px; height: 16px; }
+  .scale-band .scale-seg {
+    border-radius: 6px; transition: transform .3s cubic-bezier(.22,.9,.32,1), box-shadow .3s;
+  }
+  .scale-band .scale-seg.lit { box-shadow: 0 4px 10px rgba(66,54,102,.20); transform: scaleY(1.06); }
+  .scale-scale-legend { display: flex; margin-top: 8px; }
+  .scale-scale-legend span { flex: 1; text-align: center; font-size: 10px; color: var(--text-faint); letter-spacing: .3px; }
+  .dim-desc { font-size: 13.5px; color: var(--dim-fg); margin-top: 12px; line-height: 1.75; text-align: justify; }
+
+  /* 建议列表 */
+  .tip-item {
+    display: flex; gap: 11px; align-items: flex-start;
+    font-size: 14px; line-height: 1.72; color: var(--body-fg); margin-bottom: 9px;
+    background: var(--tip-bg);
+    border: 1px solid var(--tip-bd);
+    padding: 12px 13px; border-radius: 15px;
+  }
+  .tip-item:last-child { margin-bottom: 0; }
+  .tip-item .tip-icon { flex: none; font-size: 14px; line-height: 1.6; }
+
+  /* 结果操作 */
+  .result-actions {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    position: sticky; bottom: calc(10px + env(safe-area-inset-bottom));
+    padding: 12px 0 calc(10px + env(safe-area-inset-bottom));
+    margin-top: 4px;
+    background: var(--actions-bg);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--hairline);
+    z-index: 5;
+  }
+
+  /* 分享提示条 */
+  .share-hint {
+    background: var(--hint-bg);
+    border: 1px solid var(--hint-bd);
+    border-radius: 18px;
+    padding: 15px 16px;
+    font-size: 13px; font-weight: 500;
+    color: var(--hint-fg);
+    text-align: center;
+    line-height: 1.7; letter-spacing: .3px;
+  }
+  .share-hint strong { font-weight: 800; }
+
+  /* ===== 导出长图（隐藏） ===== */
+  #shareCanvas { display: none; }
+
+  /* ===== 提示弹窗 ===== */
+  .toast {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(.9);
+    background: rgba(32,26,50,.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    color: #fff; padding: 15px 26px;
+    border-radius: 16px; font-size: 14px; font-weight: 500; letter-spacing: .4px; z-index: 999;
+    opacity: 0; pointer-events: none; transition: all .28s cubic-bezier(.22,.9,.32,1);
+    box-shadow: 0 16px 40px rgba(0,0,0,.28);
+  }
+  .toast.show { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+
+  /* ===== 主题切换控件（右上角悬浮，单图标紧凑） ===== */
+  .theme-toggle {
+    position: fixed;
+    top: calc(14px + env(safe-area-inset-top));
+    right: 14px;
+    z-index: 60;
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; line-height: 1;
+    border-radius: 50%;
+    background: var(--switch-bg);
+    border: 1px solid var(--switch-bd);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--sh-sm);
+    cursor: pointer; font-family: inherit;
+    transition: transform .18s, box-shadow .18s;
+  }
+  .theme-toggle:active { transform: scale(.9); }
+
+  /* 兼容旧类名 */
+  .tip-item .tip-icon { font-weight: 700; }
+  .scale-seg { flex: 1; }
+
+  /* ===================== 深色主题 ===================== */
+  html[data-theme="dark"] {
+    --pink: #ff7ba9;
+    --pink-deep: #ff9dc0;
+    --violet: #8b9cff;
+    --violet-2: #b39cff;
+    --blue: #6fc6f5;
+    --amber: #ffc247;
+    --bg: #0e0d18;
+    --card: rgba(33,31,53,.74);
+    --card-solid: #1d1c2f;
+    --text: #f1efff;
+    --text-secondary: #a9a6ca;
+    --text-faint: #7f7da4;
+    --bd: rgba(160,158,230,.16);
+    --bd-strong: rgba(160,158,230,.17);
+    --hairline: rgba(160,158,230,.14);
+    --pill-bg: rgba(255,255,255,.07);
+    --pill-bg-active: rgba(255,255,255,.13);
+    --track-bg: rgba(255,255,255,.08);
+    --inset-sh: inset 0 1px 4px rgba(0,0,0,.45);
+    --letter-bg: rgba(255,255,255,.10);
+    --letter-fg: #a4a1c8;
+    --option-fg: #dedcf5;
+    --body-fg: #c8c5e8;
+    --dim-fg: #b4b1d8;
+    --sh-sm: 0 4px 16px rgba(0,0,0,.42);
+    --sh-md: 0 16px 38px rgba(0,0,0,.50);
+    --sh-lg: 0 18px 44px rgba(255,110,165,.30);
+    --grad-brand: linear-gradient(135deg,#ff9dc0 0%,#f5699f 42%,#a97bff 100%);
+    --grad-line: linear-gradient(90deg,#f5699f,#a97bff);
+    --title-grad: linear-gradient(112deg,#ffffff 0%,#ffffff 34%,#e3dbff 66%,#ffa8c9 100%);
+    --hero-bg:
+      radial-gradient(120% 90% at 12% 0%, rgba(255,255,255,.11) 0%, rgba(255,255,255,0) 58%),
+      linear-gradient(168deg,#2b2444 0%,#242038 46%,#1a1930 100%);
+    --tip-bg: linear-gradient(120deg, rgba(245,105,159,.11), rgba(169,123,255,.11));
+    --tip-bd: rgba(160,158,230,.16);
+    --hint-bg: linear-gradient(120deg, rgba(245,105,159,.14), rgba(169,123,255,.14));
+    --hint-bd: rgba(245,105,159,.26);
+    --hint-fg: #ffb3d1;
+    --actions-bg: linear-gradient(180deg, rgba(14,13,24,0) 0%, rgba(14,13,24,.93) 34%, rgba(14,13,24,.98) 100%);
+    --svg-track: rgba(255,255,255,.12);
+    --svg-grid: rgba(186,184,242,.34);
+    --svg-needle: #dcd9f7;
+    --radar-line: #a6b4ff;
+    --radar-fill: rgba(150,166,255,.26);
+    --switch-bg: rgba(255,255,255,.08);
+    --switch-bd: rgba(160,158,230,.20);
+    --modal-bg: #1d1c2f;
+    --modal-bd: rgba(255,140,185,.42);
+    --icon-sh: 0 18px 40px rgba(255,105,165,.30), inset 0 -3px 10px rgba(0,0,0,.30), inset 0 3px 8px rgba(255,255,255,.28);
+    --tag-sh: 0 2px 10px rgba(0,0,0,.40);
+    --btn-outline-bd: rgba(255,140,185,.42);
+    --opt-sh: 0 12px 28px rgba(255,105,165,.28);
+  }
+
+  /* 深色下的氛围光（换成低亮度霓虹） */
+  html[data-theme="dark"] body::before {
+    background:
+      radial-gradient(74% 46% at 6% -8%, rgba(255,92,150,.20) 0%, rgba(255,92,150,0) 62%),
+      radial-gradient(62% 42% at 100% 0%, rgba(120,110,255,.22) 0%, rgba(120,110,255,0) 64%),
+      radial-gradient(72% 44% at 50% 104%, rgba(160,90,255,.16) 0%, rgba(160,90,255,0) 62%);
+  }
+  html[data-theme="dark"] body::after { opacity: 0; }
+
+  html[data-theme="dark"] .cover-icon::after {
+    background: radial-gradient(closest-side, rgba(255,110,165,.30), rgba(255,110,165,0));
+  }
+  html[data-theme="dark"] .progress-bar .fill { box-shadow: 0 0 14px rgba(169,123,255,.70); }
+  html[data-theme="dark"] .question-card::after {
+    background: radial-gradient(closest-side, rgba(255,110,165,.14), rgba(255,110,165,0));
+  }
+  html[data-theme="dark"] .option::before { background: var(--letter-bg); color: var(--letter-fg); }
+  html[data-theme="dark"] .scale-band .scale-seg.lit { box-shadow: 0 4px 12px rgba(0,0,0,.50); }
+  html[data-theme="dark"] .toast {
+    background: rgba(243,241,255,.95); color: #1b1a2c;
+    box-shadow: 0 16px 40px rgba(0,0,0,.55);
+  }
+  html[data-theme="dark"] .btn-outline { color: var(--pink-deep); }
+  html[data-theme="dark"] .type-card .type-emoji {
+    filter: drop-shadow(0 8px 18px rgba(139,156,255,.45));
+  }
+
+  /* ============================================================
+     ===== 首页增强（Cover Pro）—— 仅作用于 #pageCover 内部 =====
+     ============================================================ */
+  @keyframes floatUp {
+    0%   { transform: translateY(14px) scale(.9); opacity: 0; }
+    18%  { opacity: .85; }
+    80%  { opacity: .5; }
+    100% { transform: translateY(-132px) scale(1.06); opacity: 0; }
+  }
+  @keyframes sweep {
+    0%   { transform: translateX(-130%) skewX(-18deg); }
+    55%  { transform: translateX(230%) skewX(-18deg); }
+    100% { transform: translateX(230%) skewX(-18deg); }
+  }
+  @keyframes wiggle { 0%,100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+  @keyframes tickUp { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes ringPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(240,104,155,.32); }
+    60%     { box-shadow: 0 0 0 16px rgba(240,104,155,0); }
+  }
+
+  .cover .cover-inner {
+    position: relative; z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    margin: auto 0;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; gap: 0;
+  }
+
+  /* 漂浮氛围粒子 */
+  .float-layer { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .float-layer .fp {
+    position: absolute; bottom: 12%; font-size: 17px; line-height: 1;
+    opacity: 0; filter: blur(.2px);
+    animation: floatUp 8s ease-in-out infinite;
+  }
+  .float-layer .f1 { left: 8%;  font-size: 20px; animation-duration: 8.5s; animation-delay: .2s; }
+  .float-layer .f2 { left: 22%; font-size: 13px; animation-duration: 7.2s; animation-delay: 1.6s; }
+  .float-layer .f3 { left: 40%; font-size: 15px; animation-duration: 9.4s; animation-delay: 3.1s; }
+  .float-layer .f4 { right: 24%; font-size: 18px; animation-duration: 8.0s; animation-delay: 2.3s; }
+  .float-layer .f5 { right: 9%;  font-size: 22px; animation-duration: 9.8s; animation-delay: .9s; }
+  .float-layer .f6 { right: 38%; font-size: 12px; animation-duration: 7.6s; animation-delay: 4.2s; }
+
+  /* 顶部徽标 */
+  .cover-badge {
+    margin: 0 auto 14px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11.5px; font-weight: 800; letter-spacing: 1.1px;
+    color: var(--pink-deep);
+    background: linear-gradient(120deg, rgba(240,104,155,.13), rgba(155,108,243,.13));
+    border: 1px solid var(--hint-bd);
+    padding: 6px 13px; border-radius: 999px;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+
+  .cover .cover-icon { width: 76px; height: 76px; border-radius: 26px; font-size: 36px; margin-bottom: 15px; animation: breathe 3.4s ease-in-out infinite, ringPulse 3.4s ease-in-out infinite; }
+
+  .cover h1 { font-size: 30px; letter-spacing: 1.4px; margin-bottom: 9px; }
+
+  /* 钩子句：比副标题更抓人 */
+  .cover-hook {
+    font-size: 16px; font-weight: 800; letter-spacing: .5px; line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 7px;
+  }
+  .cover-hook em {
+    font-style: normal;
+    background: var(--grad-line); background-size: 200% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    animation: shine 5s linear infinite;
+  }
+  .cover .subtitle { font-size: 13px; line-height: 1.75; max-width: 300px; margin-bottom: 16px; }
+
+  /* 四种人格预告：制造好奇 */
+  .persona-wrap { width: 100%; margin-bottom: 14px; }
+  .persona-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.6px;
+    color: var(--text-faint); margin-bottom: 8px;
+  }
+  .persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .persona-card {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 10px;
+    background: var(--card);
+    border: 1px solid var(--bd-strong);
+    border-radius: 16px;
+    box-shadow: var(--sh-sm);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    text-align: left; overflow: hidden; position: relative;
+  }
+  .persona-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--pc, var(--grad-line));
+  }
+  .persona-card .pe { font-size: 19px; line-height: 1; flex: none; }
+  .persona-card b { display: block; font-size: 12.5px; font-weight: 800; letter-spacing: .3px; color: var(--text); }
+  .persona-card i { display: block; font-style: normal; font-size: 10.5px; color: var(--text-faint); margin-top: 2px; letter-spacing: .2px; }
+  .persona-card.q1 { --pc: #f0689b; }
+  .persona-card.q2 { --pc: #5bb6e8; }
+  .persona-card.q3 { --pc: #9b6cf3; }
+  .persona-card.q4 { --pc: #38b2ac; }
+
+  /* 三大维度条 */
+  .dim-strip { width: 100%; display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin-bottom: 15px; }
+  .dim-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 10px 6px 9px; border-radius: 14px;
+    background: var(--tip-bg);
+    border: 1px solid var(--tip-bd);
+    text-align: center;
+  }
+  .dim-chip .di { font-size: 16px; line-height: 1; }
+  .dim-chip b { font-size: 11.5px; font-weight: 800; color: var(--text); letter-spacing: .2px; }
+  .dim-chip .dim-sub { font-size: 10px; color: var(--text-secondary); line-height: 1.45; }
+
+  .cover .meta { display: grid; grid-template-columns: auto auto; gap: 7px 8px; justify-content: center; margin-bottom: 15px; }
+  .cover .meta span { padding: 6px 12px; font-size: 12px; }
+
+  /* 主 CTA */
+  .cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 15px; }
+  .btn-cta {
+    padding: 16px 48px; font-size: 17.5px; letter-spacing: 1.2px;
+    background-size: 220% 100%;
+    animation: shine 6s linear infinite;
+    position: relative;
+  }
+  .btn-cta .arr { display: inline-block; animation: wiggle 1.4s ease-in-out infinite; font-weight: 800; }
+  .btn-cta::before {
+    content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 38%;
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.55), rgba(255,255,255,0));
+    animation: sweep 3.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .cta-note { font-size: 11.5px; color: var(--text-faint); letter-spacing: .6px; }
+  .cta-note b { color: var(--pink-deep); font-weight: 800; }
+
+  /* 社会证明 */
+  .social-proof {
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+    margin-bottom: 16px;
+    animation: tickUp .7s cubic-bezier(.22,.9,.32,1) both;
+  }
+  .avatars { display: flex; }
+  .avatars span {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; line-height: 1;
+    background: var(--card-solid);
+    border: 1.5px solid var(--bd-strong);
+    box-shadow: var(--sh-sm);
+  }
+  .avatars span + span { margin-left: -8px; }
+  .social-proof p { font-size: 11.5px; color: var(--text-secondary); letter-spacing: .4px; }
+  .social-proof p b { color: var(--text); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .social-proof p .hot { color: var(--pink-deep); font-weight: 800; }
+
+  /* 深色下的微调 */
+  html[data-theme="dark"] .cover-badge { color: var(--pink-deep); }
+  html[data-theme="dark"] .persona-card .pe { filter: drop-shadow(0 3px 8px rgba(0,0,0,.45)); }
+  html[data-theme="dark"] .btn-cta::before {
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.28), rgba(255,255,255,0));
+  }
+  html[data-theme="dark"] .avatars span { background: #26243c; }
+
+  @media (max-height: 720px) {
+    .cover .cover-icon { width: 62px; height: 62px; border-radius: 22px; font-size: 30px; margin-bottom: 11px; }
+    .cover h1 { font-size: 26px; margin-bottom: 7px; }
+    .cover .subtitle { font-size: 12.5px; margin-bottom: 12px; }
+    .cover-hook { font-size: 15px; }
+    .persona-card i { display: none; }
+    .persona-card { padding: 10px; }
+    .persona-wrap { margin-bottom: 11px; }
+    .dim-strip { margin-bottom: 11px; }
+    .cover .meta { margin-bottom: 12px; }
+    .cta-wrap { margin-bottom: 12px; }
+    .social-proof { margin-bottom: 13px; }
+    .avatars span { width: 23px; height: 23px; font-size: 12px; }
+  }
+
+  @media (max-width: 340px) {
+    .cover h1 { font-size: 27px; }
+    .persona-card i { display: none; }
+    .dim-chip .dim-sub { display: none; }
+  }
+
+  /* 支持跟随系统的用户偏好（用户手动切换后以本地记忆为准） */
+
+
+  /* ===== Quiz Pro: enhance question + option page (scoped to #pageQuiz) ===== */
+  @keyframes optIn { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+
+  #pageQuiz .progress-bar { top: calc(64px + env(safe-area-inset-top)); height: 10px; }
+  #pageQuiz .progress-bar .fill { position: relative; }
+  #pageQuiz .progress-bar .fill::after {
+    content: ''; position: absolute; right: -3px; top: 50%; transform: translateY(-50%);
+    width: 15px; height: 15px; border-radius: 50%;
+    background: #fff; border: 3px solid var(--pink);
+    box-shadow: 0 0 12px rgba(240,104,155,.7), 0 2px 6px rgba(0,0,0,.18);
+  }
+  #pageQuiz .progress-text { top: calc(84px + env(safe-area-inset-top)); }
+
+  #pageQuiz .question-card { padding: 30px 22px 26px; overflow: hidden; }
+  #pageQuiz .q-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; position: relative; z-index: 1; }
+  #pageQuiz .q-cat {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 800; letter-spacing: .4px;
+    padding: 6px 12px; border-radius: 999px; color: #fff;
+    background: var(--grad-brand);
+    box-shadow: 0 6px 16px rgba(240,104,155,.28);
+    animation: pop .36s cubic-bezier(.22,.9,.32,1) both;
+  }
+  #pageQuiz .question-card[data-cat="attachment"] .q-cat { background: linear-gradient(120deg,#f0689b,#ff8fb4); box-shadow: 0 6px 16px rgba(240,104,155,.3); }
+  #pageQuiz .question-card[data-cat="expression"] .q-cat { background: linear-gradient(120deg,#9b6cf3,#667eea); box-shadow: 0 6px 16px rgba(102,126,234,.3); }
+  #pageQuiz .question-card[data-cat="conflict"]   .q-cat { background: linear-gradient(120deg,#38b2ac,#5bb6e8); box-shadow: 0 6px 16px rgba(56,178,172,.3); }
+  #pageQuiz .q-num { background: none; padding: 0; margin: 0; font-size: 12px; font-weight: 800; letter-spacing: .8px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+  #pageQuiz .q-text { font-size: 19.5px; line-height: 1.75; font-weight: 700; letter-spacing: .2px; }
+
+  #pageQuiz .options { gap: 12px; padding-top: 4px; }
+  #pageQuiz .option {
+    padding: 16px 16px; border-radius: 18px; font-size: 15.5px;
+    animation: optIn .44s cubic-bezier(.22,.9,.32,1) both;
+    transition: transform .22s cubic-bezier(.22,.9,.32,1), box-shadow .22s, background .22s, color .22s, border-color .22s;
+  }
+  #pageQuiz .option:nth-child(1){ animation-delay: .06s; }
+  #pageQuiz .option:nth-child(2){ animation-delay: .12s; }
+  #pageQuiz .option:nth-child(3){ animation-delay: .18s; }
+  #pageQuiz .option:nth-child(4){ animation-delay: .24s; }
+  #pageQuiz .option:nth-child(5){ animation-delay: .30s; }
+  #pageQuiz .option:nth-child(6){ animation-delay: .36s; }
+  #pageQuiz .option::before { width: 30px; height: 30px; font-size: 13px; background: linear-gradient(135deg,#f3f2fc,#e9e7f7); color: var(--violet); }
+  #pageQuiz .option:hover { transform: translateX(4px); border-color: rgba(240,104,155,.4); box-shadow: 0 8px 22px rgba(224,65,124,.12); }
+  #pageQuiz .option::after {
+    content: '\2713'; flex: none; margin-left: auto;
+    width: 0; height: 0; opacity: 0; transform: scale(.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900; color: var(--pink-deep);
+    transition: all .24s cubic-bezier(.22,.9,.32,1);
+  }
+  #pageQuiz .option.selected::after { width: 24px; height: 24px; opacity: 1; transform: scale(1); background: rgba(255,255,255,.92); border-radius: 50%; }
+  #pageQuiz .option.selected:hover { transform: translateY(-1px); }
+
+  html[data-theme="dark"] #pageQuiz .q-cat { box-shadow: 0 6px 16px rgba(0,0,0,.4); }
+  html[data-theme="dark"] #pageQuiz .option::before { background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.06)); color: #cabdf5; }
+  html[data-theme="dark"] #pageQuiz .option:hover { box-shadow: 0 8px 22px rgba(0,0,0,.45); }
+  html[data-theme="dark"] #pageQuiz .option.selected::after { background: rgba(20,18,34,.9); color: #ffd0e2; }
+
+  @media (max-height: 720px) {
+    #pageQuiz .progress-bar { top: calc(60px + env(safe-area-inset-top)); }
+    #pageQuiz .question-card { padding: 24px 20px 20px; }
+    #pageQuiz .q-text { font-size: 18px; }
+    #pageQuiz .option { padding: 14px 15px; font-size: 15px; }
+  }
+
+</style>
+</head>
+<body>
+
+<div id="lockGate" style="position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#fff2f7 0%,#fdeef5 42%,#f1f0ff 100%);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;">
+  <div id="lockCard" style="width:min(88vw,360px);background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.9);border-radius:24px;box-shadow:0 24px 60px rgba(224,65,124,.18);padding:32px 26px;text-align:center;">
+    <div style="font-size:44px;line-height:1;margin-bottom:14px;">🔒</div>
+    <h1 style="font-size:20px;margin:0 0 6px;color:#23233a;letter-spacing:.5px;">访问受限</h1>
+    <p style="font-size:13px;color:#6d6d8a;margin:0 0 22px;line-height:1.7;">此问卷为私密内容<br>请输入访问密码后继续</p>
+    <input id="lockInput" type="password" placeholder="请输入访问密码" autocomplete="off" enterkeyhint="go" style="width:100%;box-sizing:border-box;padding:13px 15px;font-size:15px;border:1.5px solid rgba(120,118,190,.25);border-radius:12px;background:#fff;color:#23233a;outline:none;margin-bottom:8px;">
+    <div id="lockErr" style="min-height:18px;font-size:12.5px;color:#e0417c;margin-bottom:8px;"></div>
+    <button id="lockBtn" style="width:100%;padding:13px;font-size:15px;font-weight:700;color:#fff;border:none;border-radius:12px;background:linear-gradient(135deg,#ff8fb4 0%,#f0689b 42%,#9b6cf3 100%);cursor:pointer;box-shadow:0 12px 26px rgba(224,65,124,.3);">解锁进入</button>
+    <p style="font-size:11px;color:#a6a6c2;margin:16px 0 0;">解锁后本次会话内免重复输入</p>
+  </div>
+</div>
+
+
+<!-- 右上角主题切换（深浅切换，单图标紧凑） -->
+<button type="button" class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色/浅色模式">🌙</button>
+
+<!-- ========== 首页 ========== -->
+<div class="page cover active" id="pageCover">
+  <div class="float-layer" aria-hidden="true">
+    <span class="fp f1">💗</span><span class="fp f2">✨</span><span class="fp f3">💌</span>
+    <span class="fp f4">🫧</span><span class="fp f5">💕</span><span class="fp f6">⭐</span>
+  </div>
+
+  <div class="cover-inner">
+    <div class="cover-badge">💝 情感人格测评 · 三维度报告</div>
+
+    <div class="cover-icon">💗</div>
+
+    <h1>情感探索问卷</h1>
+    <p class="cover-hook">你在爱里的样子，<em>藏在这 20 个选择里</em></p>
+    <p class="subtitle">没有对错，凭第一反应选就好。5 分钟后，你会看见一个更真实的自己。</p>
+
+    <div class="persona-wrap">
+      <div class="persona-title">—— 你将测出自己属于哪一种 ——</div>
+      <div class="persona-grid">
+        <div class="persona-card q1"><span class="pe">🔥</span><span><b>热烈表达者</b><i>爱得滚烫，直球出击</i></span></div>
+        <div class="persona-card q2"><span class="pe">🌊</span><span><b>平衡流动者</b><i>亲密与自由兼得</i></span></div>
+        <div class="persona-card q3"><span class="pe">🛡️</span><span><b>谨慎守护者</b><i>慢热，但很长情</i></span></div>
+        <div class="persona-card q4"><span class="pe">🧊</span><span><b>独立冷静者</b><i>理性外壳，柔软内核</i></span></div>
+      </div>
+    </div>
+
+    <div class="dim-strip">
+      <div class="dim-chip"><span class="di">🫀</span><b>依恋安全感</b><span class="dim-sub">关系里你安心吗</span></div>
+      <div class="dim-chip"><span class="di">🗣️</span><b>情绪表达力</b><span class="dim-sub">感受读得懂吗</span></div>
+      <div class="dim-chip"><span class="di">🤝</span><b>冲突处理力</b><span class="dim-sub">吵架会更近吗</span></div>
+    </div>
+
+    <div class="meta">
+      <span>📝 20 题</span>
+      <span>⏱ 约 5 分钟</span>
+      <span>🔒 匿名作答</span>
+      <span>📊 专属画像</span>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="btn btn-primary btn-cta" onclick="startQuiz()">开始测试 <span class="arr">→</span></button>
+      <p class="cta-note">免费 · 无需注册 · 做完<b>立刻出结果</b></p>
+    </div>
+
+    <div class="social-proof">
+      <div class="avatars"><span>🐰</span><span>🐻</span><span>🐱</span><span>🐼</span><span>🦊</span></div>
+      <p>已有 <b>128,365</b> 人完成 · <span class="hot">92%</span> 说「准到被看穿」</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== 答题页 ========== -->
+<div class="page quiz" id="pageQuiz">
+  <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText"></div>
+  <div class="question-card" id="questionCard">
+    <div class="q-head">
+      <span class="q-cat" id="qCat"></span>
+      <span class="q-num" id="qNum"></span>
+    </div>
+    <div class="q-text" id="qText"></div>
+  </div>
+  <div class="options" id="optionsWrap"></div>
+</div>
+
+<!-- ========== 结果页 ========== -->
+<div class="page result" id="pageResult">
+  <div class="result-header">
+    <h2>你的情感画像</h2>
+    <p class="desc">基于 20 道题的综合分析</p>
+  </div>
+
+  <div class="hero-card">
+  <div class="type-card">
+    <div class="type-emoji" id="resEmoji"></div>
+    <h3 id="resTitle"></h3>
+    <p class="type-summary" id="resSummary"></p>
+  </div>
+
+  <div class="gauge-wrap">
+    <div id="gaugeBox"></div>
+    <div class="gauge-label" id="gaugeLabel"></div>
+    <div class="gauge-stars" id="gaugeStars"></div>
+    <div class="gauge-score" id="gaugeScore"></div>
+  </div>
+
+  </div><!-- /hero-card -->
+  <div class="panel">
+    <h4>📖 详细分析</h4>
+    <div class="panel-body" id="resDesc"></div>
+  </div>
+
+  <div class="radar-section">
+    <h3>📊 三维度程度图</h3>
+    <div id="radarBox"></div>
+    <div style="text-align:center;font-size:11px;color:#b9bcd6;margin-top:6px;">虚线圈由内到外为 25% / 50% / 75% / 100% 程度</div>
+  </div>
+
+  <div class="dimension-list" id="dimList"></div>
+
+  <div class="panel">
+    <h4>💡 专属建议</h4>
+    <div id="tipList"></div>
+  </div>
+
+  <div class="panel">
+    <h4>🌤️ 温馨提示</h4>
+    <div class="panel-body">本问卷仅供自我探索与娱乐参考，不构成专业心理诊断。情感模式没有绝对的好坏，看见自己就是改变的开始。</div>
+  </div>
+
+  <div class="share-hint">
+    💡 点击下方「生成分享图」，长按保存图片后可直接发小红书、朋友圈～
+  </div>
+
+  <div class="result-actions">
+    <button class="btn btn-primary btn-sm" onclick="exportShare()">📸 生成分享图</button>
+    <button class="btn btn-outline btn-sm" onclick="restart()">🔄 再测一次</button>
+  </div>
+</div>
+
+<canvas id="shareCanvas" style="display:none;"></canvas>
+<div class="toast" id="toast"></div>
+
+<script>
+
+/* ===== 主题（浅色 / 深色，可切换并记忆） ===== */
+var THEME_KEY = 'eq_theme_pref_v1';
+var PAL_LIGHT = {
+  bgFrom: '#667eea', bgTo: '#764ba2', card: '#ffffff',
+  sub: '#a5a8c9', title: '#2d2d44', head: '#333', body: '#555', body2: '#666',
+  dimName: '#444', comment: '#999', faint: '#b9bcd6',
+  track: '#eceef8', grid: '#e3e5f2', needle: '#4a4a68',
+  radarLine: '#667eea', radarFill: 'rgba(102,126,234,.20)',
+  noteBg: '#fff8ef', noteBd: '#ffd9a0', noteFg: '#b07830'
+};
+var PAL_DARK = {
+  bgFrom: '#2b2350', bgTo: '#17142b', card: '#1c1b2e',
+  sub: '#8f92bd', title: '#f4f2ff', head: '#eceaff', body: '#c7c4e6', body2: '#c2bfe2',
+  dimName: '#dedbf5', comment: '#a5a2c8', faint: '#8b8eb6',
+  track: 'rgba(255,255,255,.14)', grid: 'rgba(190,188,245,.34)', needle: '#d9d6f5',
+  radarLine: '#a6b4ff', radarFill: 'rgba(150,166,255,.26)',
+  noteBg: 'rgba(178,176,235,.10)', noteBd: 'rgba(178,176,235,.30)', noteFg: '#f2cd80'
+};
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+function PAL() { return currentTheme() === 'dark' ? PAL_DARK : PAL_LIGHT; }
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  var mt = document.getElementById('metaTheme');
+  if (mt) mt.setAttribute('content', t === 'dark' ? '#0e0d18' : '#fbfaff');
+  var tt = document.getElementById('themeToggle');
+  if (tt) tt.textContent = (t === 'dark') ? '☀️' : '🌙';
+}
+function toggleTheme() { setTheme(currentTheme() === 'dark' ? 'light' : 'dark'); }
+function setTheme(t, silent) {
+  applyTheme(t);
+  try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
+  if (!silent && document.getElementById('toast')) toast(t === 'dark' ? '已切换到深色模式 🌙' : '已切换到浅色模式 ☀️');
+}
+(function initTheme() {
+  var t = null;
+  try { t = localStorage.getItem(THEME_KEY); } catch (e) {}
+  if (t !== 'dark' && t !== 'light') {
+    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  applyTheme(t);
+})();
+
+const questions = [
+            // 依恋风格 (1-7)
+            {
+                category: "attachment",
+                reverse: true, // 【修复4】高分=依恋焦虑/不安全，反向计分后才计入「安全感」
+                text: "当伴侣没有及时回复消息时，你的第一反应通常是？",
+                options: [
+                    { text: "有点焦虑，会反复看手机", score: 5 },
+                    { text: "有点失落，但能理解对方可能在忙", score: 4 },
+                    { text: "完全不在意，我也有很多事要做", score: 3 },
+                    { text: "反而松了口气，我需要个人空间", score: 2 }
+                ]
+            },
+            {
+                category: "attachment",
+                reverse: true, // 【修复4】高分=依恋焦虑/不安全，反向计分后才计入「安全感」
+                text: "在亲密关系中，你更害怕的是？",
+                options: [
+                    { text: "被抛弃、被冷落", score: 5 },
+                    { text: "失去自我、被控制", score: 4 },
+                    { text: "冲突和争吵", score: 3 },
+                    { text: "说不上来，好像都不太怕", score: 2 }
+                ]
+            },
+            {
+                category: "attachment",
+                text: "小时候生病或难过时，你通常会？",
+                options: [
+                    { text: "第一时间找父母寻求安慰", score: 5 },
+                    { text: "自己忍着，不想麻烦别人", score: 2 },
+                    { text: "看情况，有时说有时不说", score: 3 },
+                    { text: "找朋友倾诉更多", score: 4 }
+                ]
+            },
+            {
+                category: "attachment",
+                text: "当伴侣想和你更亲密一步时，你会？",
+                options: [
+                    { text: "很开心，这正是我想要的", score: 5 },
+                    { text: "有点紧张，但愿意尝试", score: 4 },
+                    { text: "下意识想后退，需要更多时间", score: 3 },
+                    { text: "感到压力，想暂时躲开", score: 2 }
+                ]
+            },
+            {
+                category: "attachment",
+                reverse: true, // 【修复4】高分=依恋焦虑/不安全，反向计分后才计入「安全感」
+                text: "你觉得自己在关系中属于哪种类型？",
+                options: [
+                    { text: "粘人型，需要很多安全感", score: 5 },
+                    { text: "独立型，保持适当距离", score: 2 },
+                    { text: "摇摆型，时而粘人时而疏远", score: 4 },
+                    { text: "稳定型，该亲密时亲密该独立时独立", score: 3 }
+                ]
+            },
+            {
+                category: "attachment",
+                reverse: true, // 【修复4】高分=依恋焦虑/不安全，反向计分后才计入「安全感」
+                text: "当关系出现问题时，你更倾向于？",
+                options: [
+                    { text: "拼命想修复，害怕失去", score: 5 },
+                    { text: "冷静分析，寻找解决方案", score: 3 },
+                    { text: "先回避，等情绪平复再说", score: 2 },
+                    { text: "找朋友或家人商量", score: 4 }
+                ]
+            },
+            {
+                category: "attachment",
+                text: "你对'永远'这个词的看法是？",
+                options: [
+                    { text: "很向往，希望有人能永远爱我", score: 5 },
+                    { text: "不太相信，变化才是常态", score: 2 },
+                    { text: "相信但需要双方共同努力", score: 3 },
+                    { text: "既期待又害怕", score: 4 }
+                ]
+            },
+
+            // 情绪表达 (8-14)
+            {
+                category: "expression",
+                text: "生气时，你通常会？",
+                options: [
+                    { text: "直接说出来，哪怕会吵架", score: 5 },
+                    { text: "写在日记或朋友圈里（仅自己可见）", score: 3 },
+                    { text: "憋在心里，慢慢消化", score: 2 },
+                    { text: "找信任的人吐槽", score: 4 }
+                ]
+            },
+            {
+                category: "expression",
+                text: "你多久会真诚地说一次'我爱你'或类似表达？",
+                options: [
+                    { text: "经常，挂在嘴边", score: 5 },
+                    { text: "偶尔，在特别时刻", score: 4 },
+                    { text: "很少，觉得行动更重要", score: 3 },
+                    { text: "几乎从不，太肉麻了", score: 2 }
+                ]
+            },
+            {
+                category: "expression",
+                text: "当伴侣送你一份不太喜欢的礼物时，你会？",
+                options: [
+                    { text: "诚实告诉对方，免得以后重复", score: 5 },
+                    { text: "假装喜欢，不想扫兴", score: 3 },
+                    { text: "委婉暗示自己更喜欢别的", score: 4 },
+                    { text: "收下但很少使用", score: 2 }
+                ]
+            },
+            {
+                category: "expression",
+                text: "你觉得自己能准确识别自己的情绪吗？",
+                options: [
+                    { text: "能，我对自己很了解", score: 5 },
+                    { text: "大致能，但有时会混淆", score: 4 },
+                    { text: "不太能，经常说不清感受", score: 3 },
+                    { text: "不能，我习惯忽略情绪", score: 2 }
+                ]
+            },
+            {
+                category: "expression",
+                text: "哭泣对你来说意味着什么？",
+                options: [
+                    { text: "正常的情绪释放，不丢人", score: 5 },
+                    { text: "软弱的表现，尽量忍住", score: 2 },
+                    { text: "看场合，私下可以哭", score: 4 },
+                    { text: "很久没哭过了", score: 3 } // 【修复】长期压抑情绪不应比「私下会哭」更高分
+                ]
+            },
+            {
+                category: "expression",
+                text: "当伴侣问你'你怎么了'时，你通常？",
+                options: [
+                    { text: "直接说出真实感受", score: 5 },
+                    { text: "说'没事'但希望对方能懂", score: 4 },
+                    { text: "说'没事'是真的想自己静一静", score: 3 }, // 【修复】回避程度更深，分值下调
+                    { text: "转移话题，不想讨论", score: 2 }
+                ]
+            },
+            {
+                category: "expression",
+                // TODO 产品决策：本题是「表达方式偏好」（名义变量），不是表达能力，
+                // 5>4>3>2 的排序只是在制造无意义方差，建议改写题面或从计分中剔除。
+                text: "你更擅长用哪种方式表达爱？",
+                options: [
+                    { text: "语言：甜言蜜语、赞美鼓励", score: 5 },
+                    { text: "行动：做事、帮忙、照顾对方", score: 4 },
+                    { text: "陪伴：默默在身边就好", score: 3 },
+                    { text: "物质：送礼物、制造惊喜", score: 2 }
+                ]
+            },
+
+            // 冲突处理 (15-20)
+            {
+                category: "conflict",
+                text: "和伴侣吵架后，你通常会？",
+                options: [
+                    { text: "主动和好，受不了冷战", score: 5 },
+                    { text: "等对方先低头", score: 3 },
+                    { text: "冷静几天再谈", score: 4 },
+                    { text: "假装没事，但心里记一笔", score: 2 }
+                ]
+            },
+            {
+                category: "conflict",
+                text: "你觉得吵架对感情的影响是？",
+                options: [
+                    { text: "破坏性的，能免则免", score: 2 },
+                    { text: "建设性的，能增进了解", score: 5 },
+                    { text: "看怎么吵，吵得好反而更亲密", score: 4 },
+                    { text: "说不清，看严重程度", score: 3 }
+                ]
+            },
+            {
+                category: "conflict",
+                text: "当伴侣指出你的问题时，你会？",
+                options: [
+                    { text: "虚心接受，感谢对方指出", score: 5 },
+                    { text: "有点不舒服，但会反思", score: 4 },
+                    { text: "下意识反驳或辩解", score: 3 },
+                    { text: "觉得被攻击，想要反击", score: 2 }
+                ]
+            },
+            {
+                category: "conflict",
+                text: "你如何看待'翻旧账'这件事？",
+                options: [
+                    { text: "很正常，说明问题从没被解决", score: 3 },
+                    { text: "不好，会让矛盾升级", score: 5 },
+                    { text: "我很少翻，过去就让它过去", score: 4 }, // 【修复】认同翻旧账不该比「很少翻」更高分
+                    { text: "我经常翻，因为老问题总重复", score: 2 }
+                ]
+            },
+            {
+                category: "conflict",
+                text: "冷战超过3天，你会？",
+                options: [
+                    { text: "受不了，主动打破僵局", score: 5 },
+                    { text: "等对方先开口", score: 3 },
+                    { text: "找中间人调解", score: 4 },
+                    { text: "开始考虑这段关系是否合适", score: 2 }
+                ]
+            },
+            {
+                category: "conflict",
+                text: "你觉得解决冲突最重要的是？",
+                options: [
+                    { text: "谁对谁错，要讲道理", score: 3 },
+                    { text: "双方感受，情绪优先", score: 5 },
+                    { text: "实际利益，各退一步", score: 4 },
+                    { text: "时间，让问题自己淡化", score: 2 }
+                ]
+            }
+        ];
+
+// 【修复】min 由「原始总分」改为 0~1 相对位置阈值（与 overallPct 同口径），
+// 并保证最末一档 min = 0，任何输入都能命中一档。
+const resultTypes = [
+            {
+                min: 0.70, emoji: '🔥', title: '热烈表达者',
+                summary: '爱得滚烫，活得真实——你是感情里的"直球选手"',
+                desc: '你敢于爱、敢于表达、敢于面对冲突，情感世界丰富而外放。喜欢一个人会大方说出来，受了委屈也不会憋太久。你的热情像一团火，能很快点燃一段关系，让人感到被重视、被需要。但火焰太旺时也容易灼伤彼此——偶尔的冲动表达可能让对方措手不及，激烈争吵后的快速翻篇也可能掩盖了真正的问题。学会在热情里加一勺冷静：表达前先停三秒，倾听时多问一句"你是这么想的吗"，你的感情会从"热烈"升华为"深厚"。',
+                suggestions: [
+                    '情绪上头时，先深呼吸10秒再开口，避免说出让自己后悔的话',
+                    '表达爱的同时，也给对方留出回应的空间，爱不是单向的输出',
+                    '争吵后做一次"复盘"：我们到底在争什么？下次可以怎么做得更好',
+                    '你的热情很珍贵，记得也留一部分给自己'
+                ]
+            },
+            {
+                min: 0.50, emoji: '🌊', title: '平衡流动者',
+                summary: '亲密与独立兼得，你拥有让人羡慕的情感弹性',
+                desc: '你在亲密与独立、表达与倾听、坚持与妥协之间找到了不错的平衡。你的情感像水一样，能适应不同的容器——该靠近时靠近，该退后时退后，极少走极端。这样的你让关系既舒服又稳定，是很多人眼中的"理想伴侣"。需要注意的是，过度追求平衡有时会变成回避立场：当真正需要表态或争取时，一句"都可以"可能让你慢慢忘掉自己真正想要什么。偶尔允许自己"不平衡"一次，关系不会因此崩塌，反而会更真实。',
+                suggestions: [
+                    '练习在小事上明确表达偏好，"我想吃日料"比"都行"更能拉近关系',
+                    '平衡不等于没有立场，重要的事上勇敢说出你的坚持',
+                    '定期和伴侣做一次"关系体检"，聊聊彼此最近的真实感受',
+                    '你的稳定是关系的锚，但也别忘了照顾自己的情绪起伏'
+                ]
+            },
+            {
+                min: 0.28, emoji: '🛡️', title: '谨慎守护者',
+                summary: '慢热但长情，你的爱需要一把"对的钥匙"',
+                desc: '你对感情认真而谨慎，不轻易敞开心扉，但一旦认定就会非常专一。你的自我保护意识很强——这让你避开了许多浅薄的伤害，也可能让你错过了一些本可以开始的故事。别人需要更久才能走进你的世界，但走进来的人会发现：你的爱是深井，不是溪流。你的关系瓶颈往往不在"不够爱"，而在"不敢信"。试着把信任当成可以分期付款的东西：先给一小部分，对方接住了，再给更多。卸下盔甲不需要一步到位，一步一步来就好。',
+                suggestions: [
+                    '把"信任"拆小：先分享一件小事，被接住后再分享更多',
+                    '当不安出现时，试着直接说"我有点没安全感"，而不是用冷淡试探',
+                    '接受别人的好意也是一种付出，不必事事等价交换',
+                    '给值得的人一个机会，也给过去的伤害一个翻篇的机会'
+                ]
+            },
+            {
+                min: 0.00, emoji: '🧊', title: '独立冷静者',
+                summary: '理性是你的铠甲，但铠甲之下也有一颗柔软的心',
+                desc: '你极度重视个人空间和理性思考，情感对你而言是锦上添花，而非雪中送炭。你习惯自己消化情绪、自己解决问题，很少麻烦别人——这份独立令人欣赏，但过度的疏离会让亲密难以发生。感情不是非理智即盲目，真正成熟的爱是"清醒着投入"：既保持自我的完整，也允许别人走进来。试着把"我需要你"说出口，你会发现依赖并不等于软弱，被需要也是一种幸福。从低风险的小信任开始，比如麻烦别人帮一个小忙，你会重新发现情感的重量。',
+                suggestions: [
+                    '每周练习一次"麻烦别人"，从小事开始体验被照顾的感觉',
+                    '把情绪当数据看：记录一周的心情波动，了解自己真正需要什么',
+                    '亲密不会吞掉你的独立，好的关系是两个人格完整的人并肩',
+                    '允许自己偶尔不理性，为喜欢的人和事破例一次'
+                ]
+            }
+        ];
+
+// ===== 程度（等级）体系：把分数翻译成人能感受到的程度 =====
+        const DEGREE_SCALES = [
+            { name: '偏低', min: 0.00, color: '#a0aec0' },
+            { name: '中低', min: 0.20, color: '#5bb6e8' },
+            { name: '中等', min: 0.40, color: '#667eea' },
+            { name: '中高', min: 0.60, color: '#9b6cf3' },
+            { name: '较高', min: 0.80, color: '#f0689b' }
+        ];
+
+        // 统一夹到 0~1，所有可视化都从这一个函数派生
+        function clamp01(v) {
+            if (v === null || v === undefined || isNaN(v)) return 0;
+            return Math.max(0, Math.min(1, v));
+        }
+
+        function degreeOf(pct) {
+            let cur = DEGREE_SCALES[0];
+            DEGREE_SCALES.forEach(s => { if (pct >= s.min) cur = s; });
+            return cur;
+        }
+
+        // 【修复】星级直接由 degreeOf 派生，与五段刻度带共用同一套边界，
+        // 不再出现「刻度带亮 3 格、星星只有 2 颗」的错位
+        function degreeStars(pct) {
+            const n = DEGREE_SCALES.indexOf(degreeOf(clamp01(pct))) + 1;
+            return '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n);
+        }
+
+        // 综合程度仪表盘（半圆 + 指针）
+        function gaugeSVG(pct, color) {
+            const C = Math.PI * 90;
+            const p = Math.max(0.015, clamp01(pct)); // 仅保留可视下限，不再掩盖真实低分
+            const rad = Math.PI * (1 - p);
+            const px = (110 + 74 * Math.cos(rad)).toFixed(1);
+            const py = (110 - 74 * Math.sin(rad)).toFixed(1);
+            return `<svg class="degree-gauge" viewBox="0 0 220 138" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20,110 A90,90 0 0 1 200,110" fill="none" stroke="var(--svg-track)" stroke-width="17" stroke-linecap="round"/>
+                <path d="M20,110 A90,90 0 0 1 200,110" fill="none" stroke="${color}" stroke-width="17" stroke-linecap="round"
+                      stroke-dasharray="${(p * C).toFixed(1)} ${C.toFixed(1)}"/>
+                <text x="14" y="134" font-size="11" fill="var(--text-faint)" text-anchor="middle">内敛</text>
+                <text x="206" y="134" font-size="11" fill="var(--text-faint)" text-anchor="middle">外放</text>
+                <line x1="110" y1="110" x2="${px}" y2="${py}" stroke="var(--svg-needle)" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="110" cy="110" r="6.5" fill="var(--svg-needle)"/>
+            </svg>`;
+        }
+
+        // 三维度程度雷达图
+        function radarSVG(dims) {
+            const cx = 150, cy = 120, R = 78;
+            const ang = [90, 210, 330].map(a => a * Math.PI / 180);
+            const pt = (i, r) => [cx + r * Math.cos(ang[i]), cy - r * Math.sin(ang[i])];
+            const rings = [0.25, 0.5, 0.75, 1].map(f => {
+                const p = [0, 1, 2].map(i => pt(i, R * f).map(v => v.toFixed(1)).join(',')).join(' ');
+                return `<polygon points="${p}" fill="none" stroke="var(--svg-grid)" stroke-width="1"/>`;
+            }).join('');
+            const axes = [0, 1, 2].map(i => {
+                const [x, y] = pt(i, R);
+                return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--svg-grid)" stroke-width="1"/>`;
+            }).join('');
+            const poly = [0, 1, 2].map(i => pt(i, R * clamp01(dims[i].pct)).map(v => v.toFixed(1)).join(',')).join(' ');
+            const dots = [0, 1, 2].map(i => {
+                const [x, y] = pt(i, R * clamp01(dims[i].pct));
+                return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="var(--radar-line)"/>`;
+            }).join('');
+            const labels = [0, 1, 2].map(i => {
+                const [x, y] = pt(i, R + 20);
+                const anchor = i === 1 ? 'end' : (i === 2 ? 'start' : 'middle');
+                const dy = i === 0 ? -2 : 8;
+                return `<text x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" font-size="11.5" font-weight="600" fill="var(--radar-line)" text-anchor="${anchor}">${dims[i].name}</text>` +
+                       `<text x="${x.toFixed(1)}" y="${(y + dy + 14).toFixed(1)}" font-size="11" fill="${dims[i].color}" text-anchor="${anchor}">${dims[i].degree}</text>`;
+            }).join('');
+            return `<svg class="radar-svg" viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                ${rings}${axes}
+                <polygon points="${poly}" fill="var(--radar-fill)" stroke="var(--radar-line)" stroke-width="2"/>
+                ${dots}${labels}
+            </svg>`;
+        }
+
+        // 五段程度刻度带
+        function scaleBandHTML(pct, color) {
+            const idx = DEGREE_SCALES.indexOf(degreeOf(pct));
+            return '<div class="scale-band">' + DEGREE_SCALES.map((s, i) =>
+                `<div class="scale-seg${i <= idx ? ' lit' : ''}" title="${s.name}" style="background:${i <= idx ? color : 'var(--svg-track)'}"></div>`
+            ).join('') + '</div>' +
+            '<div class="scale-scale-legend"><span>偏低</span><span>中低</span><span>中等</span><span>中高</span><span>较高</span></div>';
+        }
+
+        // 各维度分档解读
+        // 【修复1】原来用原始分判档（>=15 即 high），而各维度最低分就有 12~14 分，
+        // 实测 low 档永远取不到、high 档命中率 99%+。改为按 0~1 相对位置判档。
+        function dimLevelText(dimName, pct) {
+            const p = clamp01(pct);
+            const level = p >= 0.66 ? 'high' : (p >= 0.40 ? 'mid' : 'low');
+            const texts = {
+                '依恋安全感': {
+                    high: '你在亲密关系中感到安心，既享受亲密也尊重边界，稳定感是你的底色。',
+                    mid: '你在依赖与独立之间偶尔摇摆，安全感时多时少，关系中稳定的回应能帮你巩固它。',
+                    low: '亲密关系容易触发你的不安，你可能在"怕被冷落"和"怕被束缚"之间反复拉扯——先看见这份不安，就是改变的开始。'
+                },
+                '情绪表达力': {
+                    high: '你能准确识别并表达情绪，别人很容易读懂你，你也常能通过沟通化解心结。',
+                    mid: '你大多时候能表达自己，但遇到强烈情绪时可能词不达意或选择沉默，练习"说感受"而非"说事情"会更有帮助。',
+                    low: '你习惯把情绪藏起来，不轻易示弱。情绪不会凭空消失，只会在别处冒出来，试着从写日记或向最信任的人倾诉开始。'
+                },
+                '冲突处理力': {
+                    high: '你把冲突视为了解彼此的机会，对事不对人，吵完架关系反而更近——这是非常难得的成熟。',
+                    mid: '你能处理大多数分歧，但情绪上头时偶尔会冷战或翻旧账，学会"暂停—复盘—再沟通"会让冲突更可控。',
+                    low: '面对冲突你倾向回避或硬扛，问题容易积累成隔阂。记住：表达不满不会毁掉关系，憋着才会。'
+                }
+            };
+            return texts[dimName][level];
+        }
+
+
+/* ===== 状态 ===== */
+let currentQ = 0;
+let answers = [];
+let advanceTimer = null;
+
+/* ===== 页面切换 ===== */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ===== 答题 ===== */
+function startQuiz() {
+  currentQ = 0;
+  answers = new Array(questions.length).fill(null);
+  showPage('pageQuiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  const total = questions.length;
+  document.getElementById('progressFill').style.width = (currentQ / total * 100) + '%';
+  document.getElementById('progressText').textContent = '第 ' + (currentQ + 1) + ' / ' + total + ' 题';
+  document.getElementById('qNum').textContent = (currentQ + 1) + ' / ' + total;
+  document.getElementById('qText').textContent = q.text;
+
+  const catMeta = {
+    attachment: ['🛡️', '依恋安全感'],
+    expression: ['🎭', '情绪表达力'],
+    conflict:   ['⚖️', '冲突处理力']
+  };
+  const cm = catMeta[q.category] || ['💫', '情感维度'];
+  document.getElementById('qCat').textContent = cm[0] + ' ' + cm[1];
+
+  const card = document.getElementById('questionCard');
+  card.setAttribute('data-cat', q.category || '');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'pop .3s ease';
+
+  const wrap = document.getElementById('optionsWrap');
+  wrap.innerHTML = '';
+  q.options.forEach(function (opt, i) {
+    const div = document.createElement('div');
+    div.className = 'option' + (answers[currentQ] === i ? ' selected' : '');
+    div.textContent = opt.text;
+    div.onclick = function () { selectOption(i); };
+    wrap.appendChild(div);
+  });
+}
+
+function selectOption(idx) {
+  answers[currentQ] = idx;
+  document.querySelectorAll('.option').forEach(function (el, i) {
+    el.classList.toggle('selected', i === idx);
+  });
+  clearTimeout(advanceTimer);
+  advanceTimer = setTimeout(function () {
+    if (currentQ < questions.length - 1) {
+      currentQ++;
+      renderQuestion();
+    } else {
+      document.getElementById('progressFill').style.width = '100%';
+      setTimeout(showResult, 350);
+    }
+  }, 280);
+}
+
+/* ===== 计分（修复版）=====
+   核心改动：
+   1) 每题支持 reverse 反向计分，保证同一维度内「高分=同一方向」；
+   2) 归一化改为 (score - min) / (max - min)，真 0~1，量表下半段不再失效；
+   3) 未作答按该题最低分计（不再记 0 分把总分拖到阈值区间之外）；
+   4) resultTypes 命中失败时兜底最后一档，杜绝 result.emoji 抛 TypeError；
+   5) 总分口径与维度口径统一，不再硬编码 /100。 */
+function calcScores() {
+  function optRange(q) {
+    const sc = q.options.map(function (o) { return o.score; });
+    return { lo: Math.min.apply(null, sc), hi: Math.max.apply(null, sc) };
+  }
+  // 反向计分：把「高分=不健康」的题目翻回同一方向（2~5 分量表 → lo+hi-s）
+  function itemScore(q, ai) {
+    const r = optRange(q);
+    // 未作答按「有效分最低」计：反向题要取原始最高分，翻转后才落到最低
+    const raw = (ai === null || ai === undefined) ? (q.reverse ? r.hi : r.lo) : q.options[ai].score;
+    const s = q.reverse ? (r.lo + r.hi - raw) : raw;
+    return s;
+  }
+  function bound(cat, key) {
+    return questions.filter(function (q) { return q.category === cat; })
+      .reduce(function (s, q) { const r = optRange(q); return s + (key === 'hi' ? r.hi : r.lo); }, 0);
+  }
+  // 【修复2】相对位置：[min, max] 线性映射到 0~1（旧写法 score/max 下限是 0.4，
+  // 导致「偏低/中低」两档、2 颗星以下、仪表盘「内敛」端永远取不到）
+  function toPct(score, lo, hi) { return hi > lo ? (score - lo) / (hi - lo) : 0; }
+
+  const catScore = { attachment: 0, expression: 0, conflict: 0 };
+  let answered = 0;
+  questions.forEach(function (q, i) {
+    const ai = answers[i];
+    if (ai !== null && ai !== undefined) answered++;
+    catScore[q.category] += itemScore(q, ai);
+  });
+
+  const dims = [
+    { name: '依恋安全感', score: catScore.attachment, min: bound('attachment', 'lo'), max: bound('attachment', 'hi') },
+    { name: '情绪表达力', score: catScore.expression, min: bound('expression', 'lo'), max: bound('expression', 'hi') },
+    { name: '冲突处理力', score: catScore.conflict, min: bound('conflict', 'lo'), max: bound('conflict', 'hi') }
+  ];
+  dims.forEach(function (d) {
+    d.pct = clamp01(toPct(d.score, d.min, d.max));
+    const s = degreeOf(d.pct);
+    d.degree = s.name;
+    d.color = s.color;
+    d.stars = degreeStars(d.pct);
+    d.comment = dimLevelText(d.name, d.pct); // 【修复1】传相对位置，不再传原始分
+  });
+
+  const minTotal = dims.reduce(function (s, d) { return s + d.min; }, 0);
+  const maxTotal = dims.reduce(function (s, d) { return s + d.max; }, 0);
+  const total = dims.reduce(function (s, d) { return s + d.score; }, 0);
+  const overallPct = clamp01(toPct(total, minTotal, maxTotal));
+  const overall = degreeOf(overallPct);
+  // 【修复3】兜底：任何情况下都拿得到一档，不会 undefined
+  const result = resultTypes.find(function (r) { return overallPct >= r.min; })
+               || resultTypes[resultTypes.length - 1];
+
+  return {
+    emoji: result.emoji, title: result.title, summary: result.summary, desc: result.desc,
+    tips: result.suggestions,
+    total: total, minTotal: minTotal, maxTotal: maxTotal,
+    answered: answered, answeredTotal: questions.length,
+    overallDegree: overall.name, overallColor: overall.color, overallPct: overallPct,
+    overallStars: degreeStars(overallPct),
+    dims: dims,
+    date: new Date().toLocaleDateString('zh-CN')
+  };
+}
+
+/* ===== 结果页渲染 ===== */
+function showResult() {
+  const d = calcScores();
+  window.__resultData = d;
+
+  document.getElementById('resEmoji').textContent = d.emoji;
+  document.getElementById('resTitle').textContent = d.title;
+  document.getElementById('resSummary').textContent = d.summary;
+
+  document.getElementById('gaugeBox').innerHTML = gaugeSVG(d.overallPct, d.overallColor);
+  document.getElementById('gaugeLabel').innerHTML =
+    '<span style="color:' + d.overallColor + '">情感投入程度：' + d.overallDegree + '</span>';
+  document.getElementById('gaugeStars').textContent = d.overallStars;
+  document.getElementById('gaugeScore').textContent =
+    '程度由 20 题作答综合评定 · 得分 ' + d.total + ' / ' + d.maxTotal +
+    '（量表区间 ' + d.minTotal + '~' + d.maxTotal + '）· 相对位置 ' + Math.round(d.overallPct * 100) + '%';
+
+  document.getElementById('resDesc').textContent = d.desc;
+  document.getElementById('radarBox').innerHTML = radarSVG(d.dims);
+
+  document.getElementById('dimList').innerHTML = d.dims.map(function (dim) {
+    return '<div class="dim-item">' +
+      '<div class="dim-header">' +
+        '<span class="dim-name">' + dim.name + '</span>' +
+        '<span class="dim-degree-tag" style="background:' + dim.color + '1f;color:' + dim.color + '">' +
+          dim.degree + ' ' + dim.stars +
+          '<span class="dim-score-lite">' + dim.score + '/' + dim.max + ' 分</span>' +
+        '</span>' +
+      '</div>' +
+      scaleBandHTML(dim.pct, dim.color) +
+      '<div class="dim-desc">' + dim.comment + '</div>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('tipList').innerHTML = d.tips.map(function (tip, i) {
+    return '<div class="tip-item"><span class="tip-icon">' + ['🌱', '🗣️', '🤝', '💗'][i % 4] +
+           '</span><span>' + tip + '</span></div>';
+  }).join('');
+
+  showPage('pageResult');
+}
+
+        // ===== 导出结果图（Canvas 绘制，无需外部库） =====
+        function roundRectPath(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            ctx.closePath();
+        }
+
+        function wrapLines(ctx, text, maxWidth) {
+            const lines = [];
+            let line = '';
+            for (const ch of text) {
+                if (ch === '\n') { lines.push(line); line = ''; continue; }
+                if (ctx.measureText(line + ch).width > maxWidth) { lines.push(line); line = ch; }
+                else line += ch;
+            }
+            if (line) lines.push(line);
+            return lines;
+        }
+
+        // 布局绘制：在 ctx 上绘制，返回内容底部 y 坐标
+        // 画综合程度仪表盘（半圆 + 指针）
+        function drawGaugeCanvas(ctx, cx, cy, R, pct, color) {
+            const P = PAL();
+            const p = Math.max(0.015, clamp01(pct)); // 仅保留可视下限，不再掩盖真实低分
+            ctx.lineCap = 'round';
+            ctx.lineWidth = 16;
+            ctx.strokeStyle = P.track;
+            ctx.beginPath(); ctx.arc(cx, cy, R, Math.PI, Math.PI * 2); ctx.stroke();
+            ctx.strokeStyle = color;
+            ctx.beginPath(); ctx.arc(cx, cy, R, Math.PI, Math.PI + Math.PI * p); ctx.stroke();
+            const ang = Math.PI * (1 - p);
+            ctx.strokeStyle = P.needle;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + (R - 13) * Math.cos(ang), cy - (R - 13) * Math.sin(ang));
+            ctx.stroke();
+            ctx.fillStyle = P.needle;
+            ctx.beginPath(); ctx.arc(cx, cy, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = P.faint;
+            ctx.font = '12px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('内敛', cx - R, cy + 30);
+            ctx.fillText('外放', cx + R, cy + 30);
+            ctx.textAlign = 'left';
+        }
+
+        // 画三维度程度雷达图
+        function drawRadarCanvas(ctx, cx, cy, R, dims) {
+            const P = PAL();
+            const ang = [90, 210, 330].map(a => a * Math.PI / 180);
+            const pt = (i, r) => [cx + r * Math.cos(ang[i]), cy - r * Math.sin(ang[i])];
+            ctx.strokeStyle = P.grid;
+            ctx.lineWidth = 1;
+            [0.25, 0.5, 0.75, 1].forEach(f => {
+                ctx.beginPath();
+                [0, 1, 2].forEach((i, k) => {
+                    const [x, yy] = pt(i, R * f);
+                    k === 0 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy);
+                });
+                ctx.closePath(); ctx.stroke();
+            });
+            [0, 1, 2].forEach(i => {
+                const [x, yy] = pt(i, R);
+                ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, yy); ctx.stroke();
+            });
+            ctx.beginPath();
+            [0, 1, 2].forEach((i, k) => {
+                const [x, yy] = pt(i, R * clamp01(dims[i].pct));
+                k === 0 ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy);
+            });
+            ctx.closePath();
+            ctx.fillStyle = P.radarFill;
+            ctx.fill();
+            ctx.strokeStyle = P.radarLine;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            dims.forEach((dim, i) => {
+                const [x, yy] = pt(i, R * clamp01(dim.pct));
+                ctx.fillStyle = P.radarLine;
+                ctx.beginPath(); ctx.arc(x, yy, 4.5, 0, Math.PI * 2); ctx.fill();
+            });
+            dims.forEach((dim, i) => {
+                const [x, yy] = pt(i, R + 20);
+                ctx.textAlign = i === 1 ? 'right' : (i === 2 ? 'left' : 'center');
+                ctx.fillStyle = P.radarLine;
+                ctx.font = '600 14px "PingFang SC", "Microsoft YaHei", sans-serif';
+                ctx.fillText(dim.name, x, i === 0 ? yy - 4 : yy + 10);
+                ctx.fillStyle = dim.color;
+                ctx.font = 'bold 13px "PingFang SC", "Microsoft YaHei", sans-serif';
+                ctx.fillText(dim.degree, x, i === 0 ? yy + 12 : yy + 26);
+            });
+            ctx.textAlign = 'left';
+        }
+
+        // 画五段程度刻度带
+        function drawScaleBand(ctx, x, y, w, h, pct, color) {
+            const P = PAL();
+            const gap = 3, sw = (w - gap * 4) / 5;
+            const idx = ['偏低', '中低', '中等', '中高', '较高'].indexOf(degreeOf(pct).name);
+            for (let i = 0; i < 5; i++) {
+                roundRectPath(ctx, x + i * (sw + gap), y, sw, h, 3);
+                ctx.fillStyle = i <= idx ? color : P.track;
+                ctx.fill();
+            }
+        }
+
+        // 布局绘制：在 ctx 上绘制，返回内容底部 y 坐标
+        function drawResultCard(ctx, W, M, d) {
+            const P = PAL();
+            const cx = M + 40;              // 卡片内容左边距
+            const cw = W - M * 2 - 80;      // 内容宽度
+            const loT = d.minTotal != null ? d.minTotal : 40;
+            const hiT = d.maxTotal != null ? d.maxTotal : 100;
+            const degPct = d.overallPct != null ? clamp01(d.overallPct)
+                       : clamp01((d.total - loT) / (hiT - loT));
+            const deg = d.overallDegree || degreeOf(degPct).name;
+            const degColor = d.overallColor || degreeOf(degPct).color;
+            let y = M + 55;
+
+            // 顶部小标题
+            ctx.fillStyle = P.sub;
+            ctx.font = '600 20px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('💝 情感探索问卷 · 我的情感画像', W / 2, y);
+            y += 78;
+
+            // Emoji
+            ctx.font = '72px sans-serif';
+            ctx.fillText(d.emoji, W / 2, y);
+            y += 62;
+
+            // 类型标题
+            ctx.fillStyle = P.title;
+            ctx.font = 'bold 42px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.fillText(d.title, W / 2, y);
+            y += 46;
+
+            // 一句话总结
+            ctx.fillStyle = P.body;
+            ctx.font = '600 22px "PingFang SC", "Microsoft YaHei", sans-serif';
+            wrapLines(ctx, d.summary, cw).forEach(line => { ctx.fillText(line, W / 2, y); y += 34; });
+            y += 26;
+
+            // ===== 综合程度仪表盘 =====
+            const gR = 76;
+            drawGaugeCanvas(ctx, W / 2, y + gR, gR, degPct, degColor);
+            y += gR * 2 + 16;
+
+            ctx.fillStyle = degColor;
+            ctx.font = 'bold 28px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.fillText('情感投入程度：' + deg, W / 2, y);
+            y += 32;
+            ctx.font = 'bold 22px sans-serif';
+            ctx.fillText(d.overallStars || degreeStars(degPct), W / 2, y);
+            y += 28;
+            ctx.fillStyle = P.sub;
+            ctx.font = '14px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.fillText(`程度由 20 题作答综合评定 · 得分 ${d.total} / ${d.maxTotal != null ? d.maxTotal : 100}（区间 ${d.minTotal != null ? d.minTotal : 40}~${d.maxTotal != null ? d.maxTotal : 100}）· 相对位置 ${Math.round(degPct * 100)}%`, W / 2, y);
+            y += 56;
+
+            // 分割线
+            ctx.strokeStyle = P.track;
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(cx, y); ctx.lineTo(cx + cw, y); ctx.stroke();
+            y += 48;
+
+            // 详细分析
+            ctx.textAlign = 'left';
+            ctx.fillStyle = P.head;
+            ctx.font = 'bold 26px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.fillText('📖 详细分析', cx, y);
+            y += 40;
+            ctx.fillStyle = P.body2;
+            ctx.font = '18px "PingFang SC", "Microsoft YaHei", sans-serif';
+            wrapLines(ctx, d.desc, cw).forEach(line => { ctx.fillText(line, cx, y); y += 31; });
+            y += 40;
+
+            // ===== 维度程度雷达图 =====
+            ctx.fillStyle = P.head;
+            ctx.font = 'bold 26px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.fillText('📊 维度程度图', cx, y);
+            y += 122;
+            drawRadarCanvas(ctx, W / 2, y, 90, d.dims);
+            y += 126;
+            ctx.fillStyle = P.faint;
+            ctx.font = '13px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('三维度程度总览（虚线圈由内到外为 25% / 50% / 75% / 100% 程度）', W / 2, y);
+            ctx.textAlign = 'left';
+            y += 44;
+
+            // 维度程度明细
+            d.dims.forEach(dim => {
+                const dc = dim.color || degreeOf(dim.pct).color;
+                const dn = dim.degree || degreeOf(dim.pct).name;
+                ctx.fillStyle = P.dimName;
+                ctx.font = '600 19px "PingFang SC", "Microsoft YaHei", sans-serif';
+                ctx.fillText(dim.name, cx, y);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = dc;
+                ctx.font = 'bold 19px "PingFang SC", "Microsoft YaHei", sans-serif';
+                ctx.fillText(`${dn} ${(dim.stars || degreeStars(dim.pct))}  ${dim.score}/${dim.max} 分`, cx + cw, y);
+                ctx.textAlign = 'left';
+                y += 22;
+                drawScaleBand(ctx, cx, y, cw, 14, dim.pct, dc);
+                ctx.fillStyle = P.faint;
+                ctx.font = '11px "PingFang SC", "Microsoft YaHei", sans-serif';
+                const legW = (cw - 12) / 5;
+                ['偏低', '中低', '中等', '中高', '较高'].forEach((t, k) => {
+                    ctx.textAlign = k === 0 ? 'left' : (k === 4 ? 'right' : 'center');
+                    const lx = k === 0 ? cx : (k === 4 ? cx + cw : cx + legW * (k + 0.5));
+                    ctx.fillText(t, lx, y + 27);
+                });
+                ctx.textAlign = 'left';
+                y += 48;
+                ctx.fillStyle = P.comment;
+                ctx.font = '15px "PingFang SC", "Microsoft YaHei", sans-serif';
+                wrapLines(ctx, dim.comment, cw).forEach(line => { ctx.fillText(line, cx, y); y += 24; });
+                y += 18;
+            });
+            y += 16;
+
+            // 建议
+            ctx.fillStyle = P.head;
+            ctx.font = 'bold 26px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.fillText('💡 专属建议', cx, y);
+            y += 40;
+            ctx.font = '18px "PingFang SC", "Microsoft YaHei", sans-serif';
+            d.tips.forEach((tip, i) => {
+                ctx.fillText(['🌱', '🗣️', '🤝', '💗'][i % 4], cx, y);
+                wrapLines(ctx, tip, cw - 36).forEach(line => {
+                    ctx.fillStyle = P.body;
+                    ctx.fillText(line, cx + 36, y);
+                    y += 29;
+                });
+                y += 10;
+            });
+            y += 14;
+
+            // 温馨提示框
+            const tipTitle = '🌤️ 温馨提示';
+            const tipBody = '本问卷仅供自我探索与娱乐参考，不构成专业心理诊断。情感模式没有绝对的好坏，看见自己就是改变的开始。';
+            ctx.font = '15px "PingFang SC", "Microsoft YaHei", sans-serif';
+            const tipLines = wrapLines(ctx, tipBody, cw - 44);
+            const boxH = 52 + tipLines.length * 24;
+            roundRectPath(ctx, cx, y, cw, boxH, 12);
+            ctx.fillStyle = P.noteBg;
+            ctx.fill();
+            ctx.strokeStyle = P.noteBd;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.fillStyle = P.noteFg;
+            ctx.font = 'bold 16px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.fillText(tipTitle, cx + 22, y + 32);
+            ctx.font = '14px "PingFang SC", "Microsoft YaHei", sans-serif';
+            tipLines.forEach(line => { ctx.fillText(line, cx + 22, y + 60); y += 24; });
+            y += boxH - 24 + 30;
+
+            // 底部
+            ctx.textAlign = 'center';
+            ctx.fillStyle = P.faint;
+            ctx.font = '14px "PingFang SC", "Microsoft YaHei", sans-serif';
+            ctx.fillText(`测于 ${d.date} · 20道题，重新认识你的情感世界`, W / 2, y);
+
+            return y;
+        }
+
+/* ===== 导出分享图（与电脑端同款长图：仪表盘 + 雷达 + 刻度带 + 建议） ===== */
+function drawShareImage(d) {
+  const P = PAL();
+  const W = 780, M = 44, SCALE = 1.5;
+
+  const measureCv = document.createElement('canvas');
+  measureCv.width = W;
+  const mctx = measureCv.getContext('2d');
+  const bottomY = drawResultCard(mctx, W, M, d);
+  const H = bottomY + M + 20;
+
+  const cv = document.getElementById('shareCanvas');
+  cv.width = W * SCALE;
+  cv.height = H * SCALE;
+  const ctx = cv.getContext('2d');
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(SCALE, SCALE);
+
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, P.bgFrom);
+  bg.addColorStop(1, P.bgTo);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = P.card;
+  roundRectPath(ctx, M, M, W - M * 2, H - M * 2, 24);
+  ctx.fill();
+
+  drawResultCard(ctx, W, M, d);
+  return cv.toDataURL('image/png');
+}
+
+function exportShare() {
+  // 【修复3】结果被清空时不再拿空作答现算一份假结果
+  const d = window.__resultData;
+  if (!d) { toast('请先完成测试，再生成分享图'); return; }
+  try {
+    const url = drawShareImage(d);
+    showShareImage(url, d.title);
+    toast('分享图已生成');
+  } catch (e) {
+    toast('生成失败，请直接截图保存');
+  }
+}
+
+function showShareImage(url, title) {
+  let ov = document.getElementById('shareModal');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'shareModal';
+    ov.style.cssText = 'position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(9,7,20,.76);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);' +
+      'z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;';
+    ov.innerHTML = '<div style="background:var(--modal-bg);border-radius:26px;padding:18px;width:100%;' +
+      'max-width:400px;max-height:88%;overflow-y:auto;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.36);">' +
+      '<img id="shareImg" alt="" style="width:100%;border-radius:18px;display:block;box-shadow:0 10px 26px rgba(66,54,102,.16);">' +
+      '<div style="font-size:13px;color:var(--text-secondary);margin:14px 2px 16px;line-height:1.7;letter-spacing:.3px;">' +
+      '长按上方图片即可保存到相册，再发到小红书或朋友圈</div>' +
+      '<a id="shareDl" style="display:inline-block;font-size:15px;font-weight:700;color:var(--pink-deep);' +
+      'border:1.5px solid var(--modal-bd);background:var(--pill-bg);border-radius:999px;padding:11px 24px;text-decoration:none;margin-right:10px;">下载图片</a>' +
+      '<button id="shareClose" style="font-size:15px;font-weight:700;color:#fff;background:linear-gradient(135deg,#ff8fb4,#f0689b 45%,#9b6cf3);' +
+      'border:none;border-radius:999px;padding:12px 26px;box-shadow:0 10px 24px rgba(224,65,124,.32);font-family:inherit;">关闭</button></div>';
+    document.body.appendChild(ov);
+    document.getElementById('shareClose').onclick = function () { ov.style.display = 'none'; };
+    ov.onclick = function (e) { if (e.target === ov) ov.style.display = 'none'; };
+  }
+  document.getElementById('shareImg').src = url;
+  const a = document.getElementById('shareDl');
+  a.href = url;
+  a.download = '我的情感画像-' + (title || '') + '.png';
+  ov.style.display = 'flex';
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function () { t.classList.remove('show'); }, 1600);
+}
+
+function restart() {
+  clearTimeout(advanceTimer);
+  window.__resultData = null; // 【修复】重测后不会导出上一次的旧结果
+  answers = [];
+  currentQ = 0;
+  document.getElementById('progressFill').style.width = '0%';
+  showPage('pageCover');
+}
+
+</script>
+
+<script>
+(function(){
+  var ACCESS_HASH = "de1ae333243634f298b1662658ac0cbce614b4985aff4867d8837611acc9c61c";
+  var KEY = "aq_unlocked_dec89333";
+  var gate = document.getElementById('lockGate');
+  if(!gate) return;
+  function jsSha256(ascii){function rightRotate(v,a){return (v>>>a)|(v<<(32-a));}var mathPow=Math.pow,maxWord=mathPow(2,32),lp='length',i,j,result='';var words=[],asciiBitLength=ascii[lp]*8;var hash=jsSha256.h=jsSha256.h||[],k=jsSha256.k=jsSha256.k||[],primeCounter=k[lp],isComposite={};for(var candidate=2;primeCounter<64;candidate++){if(!isComposite[candidate]){for(i=0;i<313;i+=candidate){isComposite[i]=candidate;}hash[primeCounter]=(mathPow(candidate,.5)*maxWord)|0;k[primeCounter++]=(mathPow(candidate,1/3)*maxWord)|0;}}ascii+='\x80';while(ascii[lp]%64-56)ascii+='\x00';for(i=0;i<ascii[lp];i++){j=ascii.charCodeAt(i);if(j>>8)return;words[i>>2]|=j<<((3-i)%4)*8;}words[words[lp]]=((asciiBitLength/maxWord)|0);words[words[lp]]=(asciiBitLength);for(j=0;j<words[lp];){var w=words.slice(j,j+=16),oldHash=hash;hash=hash.slice(0,8);for(i=0;i<64;i++){var a=hash[0],e=hash[4];var temp1=hash[7]+(rightRotate(e,6)^rightRotate(e,11)^rightRotate(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rightRotate(w[i-15],7)^rightRotate(w[i-15],18)^(w[i-15]>>>3))+w[i-7]+(rightRotate(w[i-2],17)^rightRotate(w[i-2],19)^(w[i-2]>>>10))));var temp2=(rightRotate(a,2)^rightRotate(a,13)^rightRotate(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));hash=[(temp1+temp2)|0].concat(hash);hash[4]=(hash[4]+temp1)|0;}for(i=0;i<8;i++){hash[i]=(hash[i]+oldHash[i])|0;}}for(i=0;i<8;i++){for(j=3;j+1;j--){var b=(hash[i]>>(j*8))&255;result+=((b<16)?0:'')+b.toString(16);}}return result;}
+  function hashHex(s){return jsSha256(unescape(encodeURIComponent(s)));}
+  function unlock(){ gate.style.display='none'; document.documentElement.style.overflow=''; try{ sessionStorage.setItem(KEY,'1'); }catch(e){} }
+  if(sessionStorage.getItem(KEY)==='1'){ unlock(); return; }
+  document.documentElement.style.overflow='hidden';
+  var input=document.getElementById('lockInput'), err=document.getElementById('lockErr'), btn=document.getElementById('lockBtn'), card=document.getElementById('lockCard');
+  function shake(){ if(card&&card.animate){card.animate([{transform:'translateX(0)'},{transform:'translateX(-9px)'},{transform:'translateX(9px)'},{transform:'translateX(0)'}],{duration:300});} }
+  function fail(msg){ err.textContent=msg; shake(); }
+  function tryUnlock(){
+    var v=input.value||'';
+    if(!v){ fail('请输入密码'); return; }
+    if(hashHex(v)===ACCESS_HASH){ unlock(); }
+    else { fail('密码错误，请重试'); input.value=''; input.focus(); }
+  }
+  btn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); tryUnlock(); } });
+  setTimeout(function(){ try{input.focus();}catch(e){} }, 120);
+})();
+</script>
+
+</body>
+</html>
